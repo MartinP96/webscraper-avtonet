@@ -22,8 +22,8 @@ import csv
 class ArticleInstance:
 
     instance = 0
-    name = ""
-    price = ""
+    name : str
+    price : str
     year = ""
     kilometers = ""
     url = ""

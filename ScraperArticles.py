@@ -22,14 +22,14 @@ import csv
 class ArticleInstance:
 
     instance = 0
-    name = ""
-    price = ""
-    year = ""
-    kilometers = ""
-    url = ""
-    id = ""
-    time_stamp = ""
-    test = ""
+    name : str
+    price : str
+    year : str
+    kilometers : str
+    url : str
+    id : str
+    time_stamp : str
+    test : str
 
     """
         Class constructor: Set date and time uppon class creation

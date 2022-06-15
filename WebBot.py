@@ -20,7 +20,7 @@ import os
     Main WebBot Class
 """
 class WebBot:
-    _scraper_output_path = ""
+    _scraper_output_path: str
     _scraper = None
     _current_articles = None
 
@@ -94,9 +94,7 @@ class WebBot:
         old_articles = ArticleList()
         old_articles.read_csv(old_articles_path)
 
-        # Compare old and new data
         new_articles = ArticleList()
-        #num_of_new_articles = 0
         for current in current_articles.list:
             num_of_matches = 0
             for old in old_articles.list:
@@ -105,9 +103,7 @@ class WebBot:
 
                 # If number of matches 0, we found new article
             if num_of_matches == 0:
-                # new_articles.list.append(current)
                 new_articles.append_list(current)
-                #num_of_new_articles += 1
 
         print(f"Found {new_articles.num_of_articles} new articles. \nRetriveing data done.\n")
         return new_articles

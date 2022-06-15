@@ -165,6 +165,7 @@ class HTMLScraper_avtonet:
                 current_article.year = td_year.text
                 # Kilometers
                 td_kilometers = div_additional_data.find_all("td", {"class": "pl-3"})
+                current_article.kilometers = ""
                 for item in td_kilometers:
                     if len(item["class"]) == 1:
                         current_article.kilometers = item.text

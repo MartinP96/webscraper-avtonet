@@ -21,15 +21,15 @@ import csv
 '''
 class ArticleInstance:
 
-    instance = 0
-    name : str
-    price : str
-    year = ""
-    kilometers = ""
-    url = ""
-    id = ""
-    time_stamp = ""
-    test = ""
+    instance: int
+    name: str
+    price: str
+    year: str
+    kilometers: str
+    url: str
+    id: str
+    time_stamp: str
+    test: str
 
     """
         Class constructor: Set date and time uppon class creation
@@ -174,7 +174,7 @@ class ArticleList:
     """
         Public write_csv method: Writes whole list of Articles to output csv file
         Inputs: 
-            path: path to outptu csv file
+            path: path to output csv file
         Return: 
             /
     """

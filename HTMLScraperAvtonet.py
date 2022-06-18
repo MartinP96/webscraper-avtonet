@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 import math
 from ScraperArticles import ArticleList, ArticleInstance
+import sys
 
 '''
  File name: HTMLScraperAvtonet.py
@@ -55,12 +56,15 @@ class HTMLScraper_avtonet:
 
         # Read search filter to dictionary
         _filter_file_path = filter_file_path
-        with open(filter_file_path, 'r', encoding='UTF8', newline='') as f:
-            filter_file_reader = csv.DictReader(f, delimiter=';')
-            for i in filter_file_reader:
-                self._search_filter.append(i)
-                self._search_url.append(self._generate_url(i))  # Generate Avotnet search URL string list
-
+        try:
+            with open(filter_file_path, 'r', encoding='UTF8', newline='') as f:
+                filter_file_reader = csv.DictReader(f, delimiter=';')
+                for i in filter_file_reader:
+                    self._search_filter.append(i)
+                    self._search_url.append(self._generate_url(i))  # Generate Avotnet search URL string list
+        except:
+            print("Failure: opening configuration filter")
+            sys.exit()
     """
         Private filter data method: Filters scraped data according to search filter
         Inputs: 

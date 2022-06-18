@@ -1,2 +1,4 @@
 ime_filtra;znamka;model;cenaMin;cenaMax;letnikMin;letnikMax;oblika;ccmMin;ccmMax;mocMin;mocMax
-BMW;BMW;S1000R;100;9999;2010;2022;naked;0;9999;100;250
+BMW;BMW;S1000r;100;99999;2010;2023;naked;0;9999;100;250
+APRILIA;APRILIA;Tuono;100;99999;2010;2022;naked;800;1500;100;250
+R1;Yamaha;R1;0;99999;2000;2022;sport;750;1000;100;250

@@ -90,8 +90,10 @@ class HTMLScraper_avtonet:
         """
         result = []
         for i_filter, i_url in zip(self._search_filter, self._search_url):
-            tmp = self._scrape_page(i_filter, i_url)
-            result.append(tmp)
+            current_filter_result = self._scrape_page(i_filter, i_url)
+
+            if current_filter_result != -1:
+                result.append(current_filter_result)
 
         return result
 
@@ -127,83 +129,89 @@ class HTMLScraper_avtonet:
 
         # Extract number of found articles from string
         res = [int(i) for i in num_of_articles_str.split() if i.isdigit()]
-        num_of_articles = res[0]
-        num_per_page = 48
-        num_of_pages = math.ceil(num_of_articles / num_per_page)
 
-        # Define list of articles
-        articles = ArticleList(search_filter["ime_filtra"])
-        # articles_list = []
+        if len(res) > 0:
 
-        # Loop over html divs and parse article data to objects
-        instance = 1
-        for page in range(1, num_of_pages + 1):
-            if page > 1:
-                search_url_second_page = url + str(page)
-                response = requests.get(
-                    search_url_second_page, allow_redirects=False, headers=self._headers
-                )
-                # Parse HTML
-                soup = BeautifulSoup(response.text, "html.parser")
-                article_divs = soup.find_all(
-                    "div",
-                    {
-                        "class": "row bg-white position-relative GO-Results-Row GO-Shadow-B"
-                    },
-                )
+            num_of_articles = res[0]
+            num_per_page = 48
+            num_of_pages = math.ceil(num_of_articles / num_per_page)
 
-            for div in article_divs:
-                current_article = ArticleInstance()
-                current_article.instance = instance
+            # Define list of articles
+            articles = ArticleList(search_filter["ime_filtra"])
+            # articles_list = []
 
-                # Parse URL from div
-                a_url = div.find("a", href=True)
-                url_tmp = a_url["href"]
-                current_article.url = url_tmp.replace("..", "https://www.avto.net/")
+            # Loop over html divs and parse article data to objects
+            instance = 1
+            for page in range(1, num_of_pages + 1):
+                if page > 1:
+                    search_url_second_page = url + str(page)
+                    response = requests.get(
+                        search_url_second_page, allow_redirects=False, headers=self._headers
+                    )
+                    # Parse HTML
+                    soup = BeautifulSoup(response.text, "html.parser")
+                    article_divs = soup.find_all(
+                        "div",
+                        {
+                            "class": "row bg-white position-relative GO-Results-Row GO-Shadow-B"
+                        },
+                    )
 
-                # Get ID from URL
-                current_article.id = url_tmp[
-                    url_tmp.find("id=") + 3 : url_tmp.find("&display")
-                ]
+                for div in article_divs:
+                    current_article = ArticleInstance()
+                    current_article.instance = instance
 
-                # Parse name from div
-                div_name = div.find_all(
-                    "div",
-                    {
-                        "class": "GO-Results-Naziv bg-dark px-3 py-2 font-weight-bold text-truncate text-white text-decoration-none"
-                    },
-                )
-                span_name = div_name[0].find("span")
-                current_article.name = span_name.text
+                    # Parse URL from div
+                    a_url = div.find("a", href=True)
+                    url_tmp = a_url["href"]
+                    current_article.url = url_tmp.replace("..", "https://www.avto.net/")
 
-                # Parse price from div
-                div_price = div.find("div", {"class": "GO-Results-Price-TXT-Regular"})
-                # currentArticle.price = div_price.text
-                current_article.price = div_price.text.replace("", "").replace(" ", "")
+                    # Get ID from URL
+                    current_article.id = url_tmp[
+                        url_tmp.find("id=") + 3 : url_tmp.find("&display")
+                    ]
 
-                # Parse year of make and kilometers from div
-                div_additional_data = div.find(
-                    "div", {"class": "col-auto text-truncate py-3 GO-Results-Data"}
-                )
-                # Year of make
-                td_year = div_additional_data.find("td", {"class": "w-75 pl-3"})
-                current_article.year = td_year.text
-                # Kilometers
-                td_kilometers = div_additional_data.find_all("td", {"class": "pl-3"})
-                current_article.kilometers = ""
-                for item in td_kilometers:
-                    if len(item["class"]) == 1:
-                        current_article.kilometers = item.text
-                        break
-                # Save article object to list of articles
-                articles.append_list(current_article)
-                instance += 1
+                    # Parse name from div
+                    div_name = div.find_all(
+                        "div",
+                        {
+                            "class": "GO-Results-Naziv bg-dark px-3 py-2 font-weight-bold text-truncate text-white text-decoration-none"
+                        },
+                    )
+                    span_name = div_name[0].find("span")
+                    current_article.name = span_name.text
 
-        # Filter  scraped data
-        filtered_articles = self._filter_data(articles, search_filter)
+                    # Parse price from div
+                    div_price = div.find("div", {"class": "GO-Results-Price-TXT-Regular"})
+                    # currentArticle.price = div_price.text
+                    current_article.price = div_price.text.replace("", "").replace(" ", "")
 
-        # return articles, filtered_articles
-        return filtered_articles
+                    # Parse year of make and kilometers from div
+                    div_additional_data = div.find(
+                        "div", {"class": "col-auto text-truncate py-3 GO-Results-Data"}
+                    )
+                    # Year of make
+                    td_year = div_additional_data.find("td", {"class": "w-75 pl-3"})
+                    current_article.year = td_year.text
+                    # Kilometers
+                    td_kilometers = div_additional_data.find_all("td", {"class": "pl-3"})
+                    current_article.kilometers = ""
+                    for item in td_kilometers:
+                        if len(item["class"]) == 1:
+                            current_article.kilometers = item.text
+                            break
+                    # Save article object to list of articles
+                    articles.append_list(current_article)
+                    instance += 1
+
+            # Filter  scraped data
+            filtered_articles = self._filter_data(articles, search_filter)
+            filtered_articles.filter_name = search_filter["ime_filtra"]
+            # return articles, filtered_articles
+            return filtered_articles
+
+        return -1
+
 
     def _generate_url(self, search_filter):
         """

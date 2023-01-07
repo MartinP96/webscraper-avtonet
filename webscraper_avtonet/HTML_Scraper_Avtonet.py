@@ -184,17 +184,18 @@ class HTMLScraper_avtonet:
         # return articles, filtered_articles
         return filtered_articles
 
-    """
-        Private generate_url method: 
-        Method generates Avtonet search string url
-
-        Inputs: 
-            search_filter: search filter
-
-        Return: 
-            generated url string
-    """
     def _generate_url(self, search_filter):
+        """
+            Private generate_url method:
+            Method generates Avtonet search string url
+
+            Inputs:
+                search_filter: search filter
+
+            Return:
+                generated url string
+        """
+
         return "https://www.avto.net/Ads/results.asp?znamka=" + search_filter["znamka"] + "&model=" + \
                   search_filter["model"] + "&modelID=" + "&tip=" + "&znamka2=" + "&model2=" + "&tip2=" + "&znamka3=" + \
                   "&model3=" + "&tip3=" + "&cenaMin=" + search_filter["cenaMin"] + "&cenaMax=" + search_filter[

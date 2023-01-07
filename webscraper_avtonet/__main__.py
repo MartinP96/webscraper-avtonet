@@ -21,3 +21,4 @@ if __name__ == '__main__':
     bot1 = WebBot(scraper_filter_path, scraper_output_path)
     bot1.run()
 
+

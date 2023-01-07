@@ -109,12 +109,9 @@ class ArticleList:
         self.time_stamp = datetime.now()
         self.list = []
         self.filter_name = filter_name
-
         self.num_of_articles = 0
-        self.list = None
         self.time_stamp = None
         self.filter_name = ""
-
 
     def assign_list(self, input_list):
         """

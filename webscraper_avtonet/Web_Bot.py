@@ -32,7 +32,6 @@ class WebBot:
         self._scraper = HTMLScraper_avtonet(scraper_filter_path)
         self._scraper_output_path = scraper_output_path
         self._scraper_output_path: str
-        self._scraper = None
         self._current_articles = None
 
     def run(self):

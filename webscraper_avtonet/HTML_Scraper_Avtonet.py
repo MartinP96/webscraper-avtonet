@@ -45,15 +45,14 @@ class HTMLScraper_avtonet:
     _search_filter = []
     _search_url = []
 
-    """
-        Class constructor: Reads search filter to dictionary and Generates 
-        avtonet search url string
-
-        Inputs:
-            filter_file_path: path to scraper filter csv file
-    """
     def __init__(self, filter_file_path):
+        """
+            Class constructor: Reads search filter to dictionary and Generates
+            avtonet search url string
 
+            Inputs:
+                filter_file_path: path to scraper filter csv file
+        """
         # Read search filter to dictionary
         _filter_file_path = filter_file_path
         try:
@@ -65,15 +64,16 @@ class HTMLScraper_avtonet:
         except:
             print("Failure: opening configuration filter")
             sys.exit()
-    """
-        Private filter data method: Filters scraped data according to search filter
-        Inputs: 
-            articles_list: list of articles to be filtered
-            search_filter: search filter for filtering data
-        Return: 
-            filtered_article
-    """
+
     def _filter_data(self, articles_list, search_filter):
+        """
+            Private filter data method: Filters scraped data according to search filter
+            Inputs:
+                articles_list: list of articles to be filtered
+                search_filter: search filter for filtering data
+            Return:
+                filtered_article
+        """
         filtered_articles = ArticleList(articles_list.filter_name)
         for instance in articles_list.list:
             # Filter by model
@@ -81,13 +81,13 @@ class HTMLScraper_avtonet:
                 filtered_articles.append_list(instance)
         return filtered_articles
 
-    """
-        Main public web scraper method: Public mehod to call web scraper
-        Inputs: /
-        Return: 
-            result: all scraped data from Avtonet 
-    """
     def scrape_data(self):
+        """
+            Main public web scraper method: Public mehod to call web scraper
+            Inputs: /
+            Return:
+                result: all scraped data from Avtonet
+        """
         result = []
         for i_filter, i_url in zip(self._search_filter, self._search_url):
             tmp = self._scrape_page(i_filter, i_url)
@@ -95,19 +95,19 @@ class HTMLScraper_avtonet:
 
         return result
 
-    """
-        Private scrape_page method: 
-        Mehod retrieves HTML from Avtonet server, parse it with BeutifulSoup library and extract relevant 
-        data from parsed HTML
-        
-        Inputs: 
-            search_filter: search filter
-            url: avonet search url string
-            
-        Return: 
-            filtered_articles
-    """
     def _scrape_page(self, search_filter, url):
+        """
+            Private scrape_page method:
+            Mehod retrieves HTML from Avtonet server, parse it with BeutifulSoup library and extract relevant
+            data from parsed HTML
+
+            Inputs:
+                search_filter: search filter
+                url: avonet search url string
+
+            Return:
+                filtered_articles
+        """
 
         # Get webpage (base page)
         response = requests.get(url, allow_redirects=False, headers=self._headers)
